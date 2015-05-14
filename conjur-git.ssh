@@ -1,0 +1,10 @@
+#!/bin/bash
+eval $(ssh-agent)
+ssh-add $SSH_KEY
+#ssh $1
+echo # conjur-tutorials >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git remote add origin git@github.com:jbregman/conjur-tutorials.git
+git push -u origin master
