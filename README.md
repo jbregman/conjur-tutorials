@@ -1,10 +1,20 @@
 # conjur-tutorials
 
-Before you start the Vagrantfile you need to set the following values in your environment.  
+## Starting the Vagrant box
+Before you start the Vagrant box, you need to set the following values in your environment.  
 
-setup.sh
+Example setup.sh
 =
 export CONJUR_HOST=<hostname of your conjur server>
 export CONJUR_PASSWORD=<admin password for the conjur server>
+
+You can source the shell
+
+. ./setup.sh
+
+and then start the virtual machine
+
+vagrant up
+
 
 
