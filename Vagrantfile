@@ -13,6 +13,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Every Vagrant virtual environment requires a box to build off of.
   config.vm.box = "centos7-chef"
+  config.ssh.forward_agent = true
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -127,7 +128,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	addr = Resolv.getaddress "#{ENV['CONJUR_HOST']}"
 
        	s.args =  "#{ENV['CONJUR_HOST']} #{addr} #{ENV['CONJUR_PWD']}"
-       	s.inline =  "yum -y install ruby ruby-devel ruby-gems gcc gcc-c++ &&
+       	s.inline =  "yum -y install ruby ruby-devel ruby-gems gcc gcc-c++ git openssl openssl-devel &&
                  gem install conjur-cli && 
 		 echo Adddress=$2 &&
                  echo Host=$1 &&
@@ -144,6 +145,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	s.privileged = false
        	s.inline =  "echo yes | /usr/local/bin/conjur init -h $1 &&
 		 /usr/local/bin/conjur authn login -p $3 -u admin &&
-		 /usr/local/bin/conjur authn whoami"
+		 /usr/local/bin/conjur authn whoami &&
+		 /usr/local/bin/conjur plugin install ui &&
+                 /usr/local/bin/conjur ui"
   end
 end
