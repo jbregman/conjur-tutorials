@@ -1,4 +1,0 @@
-export HOST_API_KEY=\
-2pxng1t21vm09k7q7t4w294msz3x7wk0c3y9rckj14g4het2tkgk9b
-export KEVIN_API_KEY=\
-1maj04x30nh6tn1nfhgts152k7fz35d1y3jm2j6ccz1j2nm3k051zt
