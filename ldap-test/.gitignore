@@ -1,1 +1,4 @@
 *.json
+conjurize.sh
+myenv.sh
+results
