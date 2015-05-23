@@ -44,6 +44,13 @@ chmod a+x my_keys.sh
 
 . ./my_keys.sh
 
+echo "Creating LDAP Configuration"
+
+echo URI https://$CONJUR_HOST >> my_ldap.conf
+echo TLS_CERT /etc/conjur-$(echo $CONJUR_ACCOUNT).pem >> my_ldap.conf
+echo TLS_REQCERT demand >> my_ldap.conf
+
+
 echo "Testing LDAP Connection...."
 
 ./ldap-test.sh $HOST_API_KEY $KEVIN_API_KEY | tee ldap_test_results
