@@ -1,4 +1,5 @@
-*.json
+tomcat.json
+ldap.json
 conjurize.sh
-myenv.sh
-results
+my*.sh
+ldap_test_results
