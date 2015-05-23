@@ -4,4 +4,3 @@ rm my_ldap.conf
 rm conjurize.sh
 rm ldap.json
 rm tomcat.json
-rm ldap_test_results

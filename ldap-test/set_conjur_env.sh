@@ -51,11 +51,8 @@ echo TLS_CERT /etc/conjur-$(echo $CONJUR_ACCOUNT).pem >> my_ldap.conf
 echo TLS_REQCERT demand >> my_ldap.conf
 
 
-echo "Testing LDAP Connection...."
 
-./ldap-test.sh $HOST_API_KEY $KEVIN_API_KEY | tee ldap_test_results
-
-echo "Conjurizing hots...."
+echo "Conjurizing host...."
 
 cat tomcat.json | conjurize > conjurize.sh
 
