@@ -4,7 +4,11 @@ PATH=/opt/conjur/bin:$PATH
 
 source /conjurize.sh
 
-echo 'y' | keytool -importcert -keystore /usr/lib/jvm/java-7-openjdk-amd64/jre/lib/security/cacerts -storepass changeit -file /etc/conjur-joshops.pem
+echo 'y' | keytool -importcert -keystore /usr/lib/jvm/java-7-openjdk-amd64/jre/lib/security/cacerts -storepass changeit -file /etc/conjur-$CONJUR_ACCOUNT.pem
+
+export JAVA_OPTS=$(echo -Dtomcat.host=$TOMCAT_HOST -Dconjur.account=$CONJUR_ACCOUNT -Dconjur.host=$CONJUR_HOST)
+
+echo $JAVA_OPTS
 
 /usr/local/tomcat/bin/catalina.sh run
 tail -f /usr/local/tomcat/logs/*.log 

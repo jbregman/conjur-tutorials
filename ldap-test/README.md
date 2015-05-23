@@ -1,26 +1,23 @@
 #ldap-test
 
-0.  export CONJUR_COLLECTION=development
-1.  export CONJUR_POLICY_VERSION=1.0
-2.  export CONJUR_LDAP_POLICY=$CONJUR_COLLECTION/ldap-$CONJUR_POLICY_VERSION
-3.  Create the host tomcat - conjur host create $CONJUR_POLICY/tomcat | tee tomcat.json
-4.  Load the policy
+## Set-up the Environment
 
-$conjur policy load --as-group security_admin --collection $CONJUR_COLLECTION ldap.json ldap.rb
+create a file called policy.json:
 
-5.  Get the keys that were created for the host and the kevin user by running the set-env.sh.  This generates myenv.sh.  Add the variables into the environment:
+{
+     "collection":"development",
+     "version":"1.0"
+}
 
-. ./myenev.sh
+run the script to set-up the environment
 
-6.  Test the ldap connection with the ldap-test.sh $HOST_API_KEY $KEVIN_API_KEY
+set_conjur_env.sh
 
-7.  conjurize the host - cat tomcat.json | conjurize | conjurize.sh
+## build the docker file
 
-8.  start the docker container
+sudo docker build -t tomcatldap:1.0 .
 
-[vagrant@localhost ldap-test]$ sudo docker run -it -v $PWD/tomcat-users.xml:/us
-r/local/tomcat/conf/tomcat-users.xml -v $PWD/server.xml:/usr/local/tomcat/conf/
-server.xml -v $PWD/conjurize.sh:/conjurize.sh -v $PWD/ldap.conf:/etc/ldap/ldap.
-conf --rm -p 8080:8080 tomcatldap:1.0
+## start the docker container
 
+./run.sh
 

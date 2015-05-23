@@ -1,6 +1,6 @@
 policy "ldap-#{ENV['CONJUR_POLICY_VERSION']}" do
 
-     host = host "tomcatserver2"
+     host = host "tomcat"
 
      josh = user "josh"
      kevin = user "kevin"

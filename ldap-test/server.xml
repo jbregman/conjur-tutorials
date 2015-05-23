@@ -129,11 +129,11 @@
 
 <Realm
         className="org.apache.catalina.realm.JNDIRealm"
-        connectionURL="ldaps://ec2-52-6-6-244.compute-1.amazonaws.com"
-        userBase="ou=user,host=development\/ldap-1.0\/tomcatserver2,account=joshops,o=conjur"
+        connectionURL="ldaps://${conjur.host}"
+        userBase="ou=user,host=${tomcat.host},account=${conjur.account},o=conjur"
         userSearch="(uid={0})"
         userSubtree="true"
-        roleBase="ou=group,host=development\/ldap-1.0\/tomcatserver2,account=joshops,o=conjur"
+        roleBase="ou=group,host=${tomcat.host},account=${conjur.account},o=conjur"
         roleName="CN"
         roleSearch="(memberUid={0})"
         roleSubtree="true"
