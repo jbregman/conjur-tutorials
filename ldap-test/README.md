@@ -3,16 +3,16 @@
 ## Set-up the Environment
 
 create a file called policy.json:
-
+```
 {
      "collection":"development",
      "version":"1.0"
 }
-
+```
 run the script to set-up the environment
-
+```
 set_conjur_env.sh
-
+```
 ## test the LDAP connection
 This will run the samples described at https://developer.conjur.net/reference/services/ldap
 
