@@ -9,6 +9,7 @@ Conjur::Config.apply
 
 conjur = Conjur::Authn.connect nil, noask: true
 
+
 #The credentials file is a CSV
 #The good stuff is on the second row
 row_count=0
@@ -19,7 +20,7 @@ CSV.foreach(ARGV[0]) do |row|
    #This is the row in the credentials file
    #That has the the username, api_key, api_secret
    if row_count==2
-	user = row[0]
+	user = conjur.current_role.id
 
 	aws_key = conjur.variable user+'/aws_key'
         if !aws_key.exists?
