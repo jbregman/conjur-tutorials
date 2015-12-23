@@ -6,6 +6,12 @@ This is a sample that configures an AWS VPC with a public and private subnet pro
 
 Install the [Conjur CLI](https://developer.conjur.net/cli)
 
+Install the [Amazon CLI](http://docs.aws.amazon.com/cli/latest/userguide/installing.html)
+
+## Load AWS Credentials into Conjur
+
+When you [create access keys](http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey) for AWS, you have the option to download them to a local file.  By loading the credentials into Conjur, the credentials will be secure, and you can remove the .csv.
+
 ```
 ./load_aws_credentials.rb path_to_credentials_file > .conjurenv
 ```
