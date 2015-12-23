@@ -25,6 +25,8 @@ CSV.foreach(ARGV[0]) do |row|
 	aws_key = conjur.variable user+'/aws_key'
         if !aws_key.exists?
              aws_key = conjur.create_variable 'text/plain', 'aws_key', id: user+'/aws_key', value: row[1] 
+        else
+             aws_key.add_value row[1]
         end
         
 	puts 'AWS_ACCESS_KEY_ID: !var '+user+'/aws_key'
@@ -33,6 +35,8 @@ CSV.foreach(ARGV[0]) do |row|
 	if !aws_secret.exists?
 
              aws_secret = conjur.create_variable 'text/plain', 'aws_secret', id: user+'/aws_secret', value: row[2] 
+	else
+	     aws_secret.add_value row[2]
         end
 
 	puts 'AWS_SECRET_ACCESS_KEY: !var '+user+'/aws_secret'
