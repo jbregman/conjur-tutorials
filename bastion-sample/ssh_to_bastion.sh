@@ -1,5 +1,9 @@
 #!/bin/bash
+instance_id=`aws cloudformation describe-stack-resources --stack-name MyBastion | jsonfield StackResources.1.PhysicalResourceId`
+
+ip_address=`aws ec2 describe-instances --instance-id $instance_id | jsonfield Reservations.0.Instances.0.PublicIpAddress`
+ 
 eval $(ssh-agent)
 ssh-add $PUBLIC_SSH_KEY
-#ssh $1
-ssh $1 $2 $3 $4 $5
+
+ssh ubuntu@$ip_address 
