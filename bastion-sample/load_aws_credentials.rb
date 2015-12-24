@@ -22,24 +22,24 @@ CSV.foreach(ARGV[0]) do |row|
    if row_count==2
 	user = conjur.current_role.id
 
-	aws_key = conjur.variable user+'/aws_key'
+	aws_key = conjur.variable user+'/aws/credentials/AccessKeyId'
         if !aws_key.exists?
-             aws_key = conjur.create_variable 'text/plain', 'aws_key', id: user+'/aws_key', value: row[1] 
+             aws_key = conjur.create_variable 'text/plain', 'aws:AccessKeyId', id: user+'/aws/credentials/AccessKeyId', value: row[1] 
         else
              aws_key.add_value row[1]
         end
         
-	puts 'AWS_ACCESS_KEY_ID: !var '+user+'/aws_key'
+	puts 'AWS_ACCESS_KEY_ID: !var '+user+'/aws/credentials/AccessKeyId'
 
-	aws_secret = conjur.variable user+'/aws_secret'
+	aws_secret = conjur.variable user+'/aws/credentials/SecretAccessKey'
 	if !aws_secret.exists?
 
-             aws_secret = conjur.create_variable 'text/plain', 'aws_secret', id: user+'/aws_secret', value: row[2] 
+             aws_secret = conjur.create_variable 'text/plain', 'aws:SecretAccessKey', id: user+'/aws/credentials/SecretAccessKey', value: row[2] 
 	else
 	     aws_secret.add_value row[2]
         end
 
-	puts 'AWS_SECRET_ACCESS_KEY: !var '+user+'/aws_secret'
+	puts 'AWS_SECRET_ACCESS_KEY: !var '+user+'/aws/credentials/SecretAccessKey'
 
    end
 end
