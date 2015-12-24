@@ -27,4 +27,16 @@ You can test the set-up by running the following command
 ```
 conjur env run aws ec2 describe-regions
 ```
+## Load SSH Keys into Conjur
 
+The bastion cloud formation template uses 2 key-pairs as parameters - one for the private subnet and one for the public subnet.  You can creates the keys in Conjur and AWS by running the following commands:
+
+```
+./create_aws_ssh_key.sh key1 PUBLIC_SSH_KEY
+./create_aws_ssh_key.sh key2 PRIVATE_SSH_KEY
+```
+The script also updates the references to the SSH keys in the **.conjurenv**
+```
+PUBLIC_SSH_KEY: !tmp /tom.brady/aws/key/key1
+PRIVATE_SSH_KEY: !tmp /tom.brady/aws/key/key2
+```
