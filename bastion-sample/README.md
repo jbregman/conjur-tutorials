@@ -42,9 +42,17 @@ PRIVATE_SSH_KEY: !tmp /tom.brady/aws/key/key2
 ```
 ## Launch the Cloud Formation Template
 
+Now the Cloud Formation Template can be started.  
+
 ```
 conjur env run aws cloudformation create-stack --stack-name MyBastion --template-body file://bastion \
 --parameters ParameterKey=PublicSubnetKeyParameter,ParameterValue=key1 \
 ParameterKey=PrivateSubnetKeyParameter,ParameterValue=key2
 
+```
+
+Once the stack has started, you can ssh to the bastion using the public ssh key
+
+```
+conjur env run ./ssh_to_bastion.sh MyBastion
 ```
