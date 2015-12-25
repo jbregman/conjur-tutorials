@@ -1,5 +1,5 @@
 #!/bin/bash
-instance_id=`aws cloudformation describe-stack-resources --stack-name MyBastion | jsonfield StackResources.1.PhysicalResourceId`
+instance_id=`aws cloudformation describe-stack-resources --stack-name $1 | jsonfield StackResources.1.PhysicalResourceId`
 
 ip_address=`aws ec2 describe-instances --instance-id $instance_id | jsonfield Reservations.0.Instances.0.PublicIpAddress`
  
