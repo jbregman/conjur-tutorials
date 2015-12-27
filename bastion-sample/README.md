@@ -7,9 +7,7 @@ This is a sample that configures an AWS VPC with a public and private subnet pro
 ## Create the AWS Administration User and Group
 The bastion in the public subnet is the gateway to the private subnet.  Access to the bastion is controlled by Conjur.  In this example, there is a group called *aws:admin*.  This group configures the policies for the bastion and has sudo privileges on the bastion.  The commands below create the manager for the *aws:admin* group named *david.ortiz*.  *david.ortiz* also needs an SSH key to authenticate to the bastion.
 ```
-conjur user create --as-group=security_admin --uidnumber=34 -p david.ortiz
-ssh-keygen -t rsa -b 4096 -C "david.ortiz@example.com" -f david.ortiz
-conjur pubkeys add david.ortiz @david.ortiz.pub
+./create_user.sh david.ortiz 34
 conjur group create --as-group=security_admin --gidnumber=12345 aws_admin
 conjur group members add -a aws_admin david.ortiz
 conjur authn login david.ortiz
@@ -64,10 +62,13 @@ ubuntu@ip-10-0-1-XXX:~$exit
 ##Conjurize the Bastion
 This command configures the bastion with the Conjur identity *bastion1.example.com*
 ```
-conjur host create bastion1.example.com |tee bastion1.json | conjurize --ssh --sudo | conjur env run ./ssh_to_bastion.sh ExampleBastion
+conjur host create --as-group aws_admin bastion1.example.com |tee bastion1.json | conjurize --ssh --sudo | conjur env run ./ssh_to_bastion.sh ExampleBastion
 ```
 And add the host to the layer
 ```
 conjur layer hosts add example/bastion/v1 bastion1.example.com
-
+```
+Now, connect to the bastion as david.ortiz
+```
+conjur env run ./ssh_to_bastion.sh ExampleBastion --me
 ```
