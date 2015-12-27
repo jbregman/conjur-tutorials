@@ -4,10 +4,11 @@ This is a sample that configures an AWS VPC with a public and private subnet pro
 1. Install the [Conjur CLI](https://developer.conjur.net/cli)
 2. Install the [Amazon CLI](http://docs.aws.amazon.com/cli/latest/userguide/installing.html)
 
-## Create the Users and Groups in Conjur
+## Create the AWS Administration User and Group
+The bastion in the public subnet is the gateway to the private subnet.  Access to the bastion is controlled by Conjur.  In this example, there is a group called *aws:admin*.  This group configures the policies for the bastion and has sudo privileges on the bastion.  The commands below create the manager for the *aws:admin* group named *david.ortiz*.  *david.ortiz* also needs an SSH key to authenticate to the bastion.
 ```
 conjur user create --as-group=security_admin --uidnumber=34 -p david.ortiz
-ssh-keygen -t rsa -b 4096 -C "david.ortiz@example.com"
+ssh-keygen -t rsa -b 4096 -C "david.ortiz@example.com" -f david.ortiz
 conjur pubkeys add david.ortiz @david.ortiz.pub
 conjur group create --as-group=security_admin --gidnumber=12345 aws_admin
 conjur group members add -a aws_admin david.ortiz
