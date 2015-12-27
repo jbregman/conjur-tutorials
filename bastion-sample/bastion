@@ -341,6 +341,18 @@
         },
         "ImageId": "ami-d05e75b8",
         "InstanceType": "t2.micro",
+        "UserData": {
+          "Fn::Base64": {
+            "Fn::Join": [
+              "",
+              [
+                "#!/bin/bash\n",
+                "curl https://s3.amazonaws.com/conjur-releases/omnibus/conjur_4.28.2-1_amd64.deb > /tmp/conjur_4.28.2-1_amd64.deb\n",
+                "dpkg -i /tmp/conjur_4.28.2-1_amd64.deb\n"
+              ]
+            ]
+          }
+        },
         "KeyName": {
           "Ref": "PublicSubnetKeyParameter"
         },
