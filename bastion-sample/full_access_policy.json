@@ -20,6 +20,12 @@
       "Effect": "Allow",
       "Action": "autoscaling:*",
       "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": "iam:*",
+      "Resource": "*"
+
     }
   ]
 }

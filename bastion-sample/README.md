@@ -44,6 +44,15 @@ AWS has the ability to define specific temporary credentials tied to an IAM role
 
 ```
 conjur env run ./create_role.sh bastion-admin aws_admin full_access_policy.json
+
+```
+Now that the role has been created, create a temporary session 
+```
+conjur env run ./create_aws_key_for_role.sh bastion-admin
+```
+And finally, switch context to the role
+```
+./set-user.sh bastion-admin --no-login
 ```
 
 ## Load SSH Keys into Conjur
