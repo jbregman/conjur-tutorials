@@ -29,17 +29,16 @@ echo $assume_policy
 # Create the IAM role in AWS
 aws iam create-role --role-name $1 --assume-role-policy-document file://$assume_policy
 
+export ROLE_ARN=`aws iam get-role --role-name $1 | jsonfield Role.Arn`
+
 # Add the AWS IAM role to the Policy
 policy_name=`echo conjur_$3`
 aws iam put-role-policy --role-name $1 --policy-name $policy_name --policy-document file://$2
 
 # Create the role in conjur
-conjur role create --as-group $3 role:aws/$1
+export AWS_ROLE=$1
 
-# Create the variables used to store the AWS temporary creds
-conjur variable create --as-role role:aws/$1 aws/$1/AccessKeyId
-conjur variable create --as-role role:aws/$1 aws/$1/SecretAccessKey
-conjur variable create --as-role role:aws/$1 aws/$1/SessionToken
+conjur policy load --as-group $3 --collection example -c $1_role.json aws_role_policy.rb 
 
 #Write the .conjurenv
 echo AWS_ACCESS_KEY_ID: !var aws/$1/AccessKeyId > .conjurenv.$1
