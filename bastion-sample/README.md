@@ -62,8 +62,8 @@ The bastion cloud formation template uses 2 key-pairs as parameters - one for th
 ```
 The script also updates the references to the SSH keys in the **.conjurenv**
 ```
-PUBLIC_SSH_KEY: !tmp /david.ortiz/aws/key/demo_public_key
-PRIVATE_SSH_KEY: !tmp /david.ortiz/aws/key/demo_private_key
+PUBLIC_SSH_KEY: !tmp example/aws/role/bastion-admin/keys/demo_public_key
+PUBLIC_SSH_KEY: !tmp example/aws/role/bastion-admin/keys/demo_private key
 ```
 ## Launch the Cloud Formation Template
 Now the Cloud Formation Template can be started.  
