@@ -18,11 +18,6 @@ The *set_user.sh* command logs the user into Conjur and maps **.conjurenv** to t
 SSH_KEY: !tmp david.ortiz/personal/key
 ```
 
-## Load the Conjur Policy
-```
-conjur policy load --as-group aws_admin --collection example -c bastion.json bastion_policy.rb
-conjur group members add example/bastion/v1/admins group:aws_admin
-```
 ## Load AWS Credentials into Conjur
 When you [create access keys](http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey) for AWS, you have the option to download them to a local file.  By loading the credentials into Conjur, the credentials will be secure, and you can remove the .csv.
 ```
@@ -64,6 +59,11 @@ conjur env run ./ssh_to_bastion.sh ExampleBastion
 Exit out of the bastion
 ```
 ubuntu@ip-10-0-1-XXX:~$exit
+```
+## Load the Conjur Policy
+```
+conjur policy load --as-group aws_admin --collection example -c bastion.json bastion_policy.rb
+conjur group members add example/bastion/v1/admins group:aws_admin
 ```
 ##Conjurize the Bastion
 This command configures the bastion with the Conjur identity *bastion1.example.com*
