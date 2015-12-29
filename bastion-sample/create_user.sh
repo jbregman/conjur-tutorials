@@ -16,10 +16,13 @@ var_name=`echo $1/personal/key`
 conjur variable create $var_name
 # This is very clever - you pipe the private key in and store the value in Conjur
 cat $1 |conjur variable values add $var_name
-# Make the user the owner of the variable
+# Lock down the user and its key
 conjur resource give variable:$var_name user:$1
+conjur resource give user:$1 user:$1
+conjur role revoke_from user:$1 group:security_admin
+
 # Updates the .conjurenv with a refernce to be used by other scripts
-echo MY_SSH_KEY: !tmp $var_name >> .conjurenv
+echo SSH_KEY: !tmp $var_name >> .$1.conjurenv
 # Clean up the public and private keys.  They are stored in Conjur
 rm $1
 rm $1.pub
