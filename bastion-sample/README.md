@@ -3,6 +3,10 @@ This is a sample that configures an AWS VPC with a public and private subnet pro
 ## Set-up the Environment
 1. Install the [Conjur CLI](https://developer.conjur.net/cli)
 2. Install the [Amazon CLI](http://docs.aws.amazon.com/cli/latest/userguide/installing.html)
+3. Set the Conjur Collection.  
+```
+export COLLECTION=example
+```
 
 ## Create the AWS Administration User and Group
 The bastion in the public subnet is the gateway to the private subnet.  Access to the bastion is controlled by Conjur.  In this example, there is a group called *aws:admin*.  This group configures the policies for the bastion and has sudo privileges on the bastion.  The commands below create a user named *david.ortiz*.Users need their own SSH key to access the bastion.  The *create_user.sh* command stores the keys in Conjur.  There is no need to further secure the private key file.
@@ -23,10 +27,11 @@ When you [create access keys](http://docs.aws.amazon.com/IAM/latest/UserGuide/id
 ```
 ./load_aws_credentials.rb path_to_credentials_file > .conjurenv
 ```
-This creates a **.conjurenv** that references the credentials and will pass them into the environment for the AWS CLI. 
+This creates a **.conjurenv** that references the credentials and will pass them into the environment for the AWS CLI. The **.conjurenv** file should now have the AWS credentials and the SSH key referenced.
 ```
-AWS_ACCESS_KEY_ID: !var jbregman/aws_key
-AWS_SECRET_ACCESS_KEY: !var jbregman/aws_secret
+SSH_KEY: !tmp david.ortiz/personal/key
+AWS_ACCESS_KEY_ID: !var david.ortiz/aws/credentials/AccessKeyId
+AWS_SECRET_ACCESS_KEY: !var david.ortiz/aws/credentials/SecretAccessKey
 ```
 More information on the **.conjurenv** file can be found on the [Conjur Developer Site]( https://developer.conjur.net/reference/tools/utilities/conjurenv)
 
@@ -34,6 +39,13 @@ You can test the set-up by running the following command
 ```
 conjur env run aws ec2 describe-regions
 ```
+## Create IAM Role for the AWS Administrator's Group
+AWS has the ability to define specific temporary credentials tied to an IAM role.  This is the preferred way to access AWS as it eliminates the need to share priviledged credentials and limits the time and scope of the credentials. In this example, the administrator is going to set-up the IAM role in AWS and create a corresponding policy in Conjur.
+
+```
+conjur env run ./create_role.sh bastion-admin aws_admin full_access_policy.json
+```
+
 ## Load SSH Keys into Conjur
 The bastion cloud formation template uses 2 key-pairs as parameters - one for the private subnet and one for the public subnet.  You can creates the keys in Conjur and AWS by running the following commands:
 ```
@@ -62,7 +74,7 @@ ubuntu@ip-10-0-1-XXX:~$exit
 ```
 ## Load the Conjur Policy
 ```
-conjur policy load --as-group aws_admin --collection example -c bastion.json bastion_policy.rb
+conjur policy load --as-group aws_admin --collection $COLLECTION -c bastion.json bastion_policy.rb
 conjur group members add example/bastion/v1/admins group:aws_admin
 ```
 ##Conjurize the Bastion

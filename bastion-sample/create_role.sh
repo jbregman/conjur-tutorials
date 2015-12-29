@@ -39,7 +39,7 @@ aws iam put-role-policy --role-name $1 --policy-name $policy_name --policy-docum
 export AWS_ROLE=$1
 export AWS_POLICY=`cat $2`
 
-conjur policy load --as-group $3 --collection example -c $1_role.json aws_role_policy.rb 
+conjur policy load --as-group $3 --collection $COLLECTION  -c $1_role.json aws_role_policy.rb 
 
 #Write the .conjurenv
 echo AWS_ACCESS_KEY_ID: !var aws/$1/AccessKeyId > .conjurenv.$1
