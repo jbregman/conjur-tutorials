@@ -13,7 +13,10 @@ conjur group members add -a aws_admin david.ortiz
 ./set_user.sh david.ortiz
 ```
 
-The *set_user.sh* command logs the user into Conjur and maps **.conjurenv** to the user's credentials.
+The *set_user.sh* command logs the user into Conjur and maps **.conjurenv** to the user's credentials. The **.conjurenv** file should look like this
+```
+SSH_KEY: !tmp david.ortiz/personal/key
+```
 
 ## Load the Conjur Policy
 ```
