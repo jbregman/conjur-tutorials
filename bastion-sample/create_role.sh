@@ -37,6 +37,7 @@ aws iam put-role-policy --role-name $1 --policy-name $policy_name --policy-docum
 
 # Create the role in conjur
 export AWS_ROLE=$1
+export AWS_POLICY=`cat $2`
 
 conjur policy load --as-group $3 --collection example -c $1_role.json aws_role_policy.rb 
 
