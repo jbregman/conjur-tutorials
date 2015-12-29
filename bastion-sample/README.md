@@ -43,7 +43,7 @@ conjur env run aws ec2 describe-regions
 AWS has the ability to define specific temporary credentials tied to an IAM role.  This is the preferred way to access AWS as it eliminates the need to share priviledged credentials and limits the time and scope of the credentials. In this example, the administrator is going to set-up the IAM role in AWS and create a corresponding policy in Conjur.
 
 ```
-conjur env run ./create_role.sh bastion-admin full_access_policy.json aws-admin
+conjur env run ./create_role.sh bastion-admin full_access_policy.json aws_admin
 ```
 Now that the role has been created, create a temporary session 
 ```
@@ -63,7 +63,7 @@ The bastion cloud formation template uses 2 key-pairs as parameters - one for th
 The script also updates the references to the SSH keys in the **.conjurenv**
 ```
 PUBLIC_SSH_KEY: !tmp example/aws/role/bastion-admin/keys/demo_public_key
-PUBLIC_SSH_KEY: !tmp example/aws/role/bastion-admin/keys/demo_private key
+PRAIVTE_SSH_KEY: !tmp example/aws/role/bastion-admin/keys/demo_private key
 ```
 ## Launch the Cloud Formation Template
 Now the Cloud Formation Template can be started.  
@@ -96,5 +96,6 @@ conjur layer hosts add example/bastion/v1 bastion1.example.com
 ```
 Now, connect to the bastion as david.ortiz
 ```
+./set-user.sh david.ortiz
 conjur env run ./ssh_to_bastion.sh ExampleBastion --me
 ```
