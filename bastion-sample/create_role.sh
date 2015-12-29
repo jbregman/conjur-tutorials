@@ -41,4 +41,7 @@ conjur variable create --as-role role:aws/$1 aws/$1/AccessKeyId
 conjur variable create --as-role role:aws/$1 aws/$1/SecretAccessKey
 conjur variable create --as-role role:aws/$1 aws/$1/SessionToken
 
-
+#Write the .conjurenv
+echo AWS_ACCESS_KEY_ID: !var aws/$1/AccessKeyId > .conjurenv.$1
+echo AWS_SECRET_ACCESS_KEY: !var aws/$1/SecretAccessKey >> .conjurenv.$1
+echo AWS_SESSION_TOKEN: !var aws/$1/SessionToken >> .conjurenv.$1
