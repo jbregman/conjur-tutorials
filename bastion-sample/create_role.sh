@@ -42,6 +42,6 @@ export AWS_POLICY=`cat $2`
 conjur policy load --as-group $3 --collection $COLLECTION  -c $1_role.json aws_role_policy.rb 
 
 #Write the .conjurenv
-echo AWS_ACCESS_KEY_ID: !var aws/$1/AccessKeyId > .conjurenv.$1
-echo AWS_SECRET_ACCESS_KEY: !var aws/$1/SecretAccessKey >> .conjurenv.$1
-echo AWS_SESSION_TOKEN: !var aws/$1/SessionToken >> .conjurenv.$1
+echo AWS_ACCESS_KEY_ID: !var $COLLECTION/aws/role/$1/AccessKeyId > .$1.conjurenv
+echo AWS_SECRET_ACCESS_KEY: !var $COLLECTION/aws/role/$1/SecretAccessKey >> .$1.conjurenv
+echo AWS_SESSION_TOKEN: !var $COLLECTION/aws/role/$1/SessionToken >> .$1.conjurenv
