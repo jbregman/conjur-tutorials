@@ -111,10 +111,19 @@ Exit out of the bastion
 ubuntu@ip-10-0-1-XXX:~$exit
 ```
 ## Load the Conjur Policy
+The policy defines the layer (group of hosts) for the bastion and 2 groups (*admin* - root users, *users* - non-root users) and their permissions
 ```
 conjur policy load --as-group aws_admin --collection $COLLECTION -c bastion.json bastion_policy.rb
-conjur group members add example/bastion/v1/admins group:aws_admin
 ```
+The following commands assign the groups the permissions on the bastion
+```
+## Root Access
+conjur group members add $COLLECTION/bastion/v1/admins group:bastion_admin
+## Non-Root Access
+conjur group members add $COLLECTION/bastion/v1/users group:bastion_user
+conjur group members add $COLLECTION/bastion/v1/users group:aws_user
+```
+There is no need to grant the aws_admin group permissions, because they are the owner of the host, and therefore have full permission
 ##Conjurize the Bastion
 This command configures the bastion with the Conjur identity *bastion1.example.com*
 ```
