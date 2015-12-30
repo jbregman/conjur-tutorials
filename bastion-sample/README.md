@@ -54,15 +54,15 @@ conjur env run aws ec2 describe-regions
 AWS has the ability to define specific temporary credentials tied to an IAM role.  This is the preferred way to access AWS as it eliminates the need to share priviledged credentials and limits the time and scope of the credentials. In this example, the administrator is going to set-up the IAM role in AWS and create a corresponding policy in Conjur.
 
 ```
-conjur env run ./create_role.sh bastion-admin full_access_policy.json aws_admin
+conjur env run ./create_role.sh aws_admin full_access_policy.json aws_admin
 ```
 Now that the role has been created, create a temporary session 
 ```
-conjur env run ./create_aws_key_for_role.sh bastion-admin
+conjur env run ./create_aws_key_for_role.sh aws_admin
 ```
 And finally, switch context to the role
 ```
-./set_user.sh bastion-admin --no-login
+./set_user.sh aws_admin --no-login
 ```
 
 ## Load SSH Keys into Conjur
