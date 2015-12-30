@@ -118,7 +118,7 @@ conjur policy load --as-group aws_admin --collection $COLLECTION -c bastion.json
 The following commands assign the groups the permissions on the bastion
 ```
 ## Root Access
-conjur group members add $COLLECTION/bastion/v1/admins group:bastion_admin
+conjur group members add $COLLECTION/bastion/v1/admins group:bastion_manager
 ## Non-Root Access
 conjur group members add $COLLECTION/bastion/v1/users group:bastion_user
 conjur group members add $COLLECTION/bastion/v1/users group:aws_user
