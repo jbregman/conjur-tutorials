@@ -22,7 +22,7 @@ The bastion in the public subnet is the gateway to the private subnet.
 
 The commands below create a user named *david.ortiz*.Users need their own SSH key to access the bastion.  The *create_user.sh* command stores the keys in Conjur.  Only the user has access to the keys, so its safe to store them in Conjur.  
 ```
-./create_user.sh david.ortiz 34
+./create_user.sh david.ortiz 34 security_admin
 conjur group create --as-group=security_admin --gidnumber=12345 aws_admin
 conjur group members add -a aws_admin david.ortiz
 ./set_user.sh david.ortiz

@@ -3,7 +3,7 @@
 # This script creates a user in Conjur including a public private key/pair for SSH
 # The first parameter is the name of the user (e.g. larry.bird)
 # The second parameter is the uid (e.g 33)
-conjur user create --as-group=security_admin --uidnumber=$2 -p $1
+conjur user create --as-group=$3 --uidnumber=$2 -p $1
 # The address is required for the ssh certificate
 address=`echo $1@example.com` 
 # This command will create a private key at $1 and a public key at $1.pub
@@ -19,7 +19,7 @@ cat $1 |conjur variable values add $var_name
 # Lock down the user and its key
 conjur resource give variable:$var_name user:$1
 conjur resource give user:$1 user:$1
-conjur role revoke_from user:$1 group:security_admin
+conjur role revoke_from user:$1 group:$3
 
 # Updates the .conjurenv with a refernce to be used by other scripts
 echo SSH_KEY: !tmp $var_name >> .$1.conjurenv
