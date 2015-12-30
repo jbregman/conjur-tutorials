@@ -17,6 +17,7 @@ conjur variable create $var_name
 # This is very clever - you pipe the private key in and store the value in Conjur
 cat $1 |conjur variable values add $var_name
 # Lock down the user and its key
+conjur resource permit user:$1 group:$3 read
 conjur resource give variable:$var_name user:$1
 conjur resource give user:$1 user:$1
 conjur role revoke_from user:$1 group:$3
