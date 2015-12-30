@@ -18,13 +18,15 @@ The bastion in the public subnet is the gateway to the private subnet.
 - Bastion Users (bastion_user) - Connect to the bastion and manage AWS via the AWS CLI.  They have regular user access to the bastion
 - AWS Users - (aws_user) - Connect via the bastion to AWS infrastructure provisioned by the bastion_users
 
-## Create the AWS Administration User and Group
+## Create the Users and Groups in Conjur
 
-The commands below create a user named *david.ortiz*.Users need their own SSH key to access the bastion.  The *create_user.sh* command stores the keys in Conjur.  Only the user has access to the keys, so its safe to store them in Conjur.  
+Users need their own SSH key to access the bastion.  The *create_user.sh* command creates the keys and stores thems in Conjur.  Only the user has access to the keys, so its safe to store them in Conjur.  
 ```
 ./create_user.sh david.ortiz 34 security_admin
 conjur group create --as-group=security_admin --gidnumber=12345 aws_admin
 conjur group members add -a aws_admin david.ortiz
+# Allow the aws_admin to add public keys for other users
+conjur resource permit service:pubkeys-1.0/public-keys group:aws_admin update
 ./set_user.sh david.ortiz
 ```
 
@@ -33,6 +35,23 @@ The *set_user.sh* command logs the user into Conjur and maps **.conjurenv** to t
 SSH_KEY: !tmp david.ortiz/personal/key
 ```
 
+The rest of the users and groups will be created by the aws_admin (david.ortiz)
+```
+# Set-up the Bastion Manager
+./create_user.sh ted.williams 7 aws_admin
+conjur group create --as-group=aws_admin --gidnumber=12346 bastion_manager
+conjur group members add -a bastion_manager ted.williams
+
+# Set-up the Bastion User
+./create_user.sh jerry.remy 2 aws_admin
+conjur group create --as-group=aws_admin --gidnumber=12347 bastion_user
+conjur group members add -a bastion_user jerry.remy
+
+# Set-up the AWS User
+./create_user.sh pedro.martinez 45 aws_admin
+conjur group create --as-group=aws_admin --gidnumber=12348 aws_user
+conjur group members add -a aws_user pedro.martinez
+```
 ## Load AWS Credentials into Conjur
 When you [create access keys](http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey) for AWS, you have the option to download them to a local file.  By loading the credentials into Conjur, the credentials will be secure, and you can remove the .csv.
 ```
