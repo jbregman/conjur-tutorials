@@ -5,7 +5,7 @@
 # The second parameter is the uid (e.g 33)
 conjur user create --as-group=$3 --uidnumber=$2 -p $1
 # The address is required for the ssh certificate
-address=`echo $1@example.com` 
+address=`echo $1@$COLLECTION.com` 
 # This command will create a private key at $1 and a public key at $1.pub
 ssh-keygen -t rsa -b 4096 -C $address -f $1 
 # Add the public key to the user in Conjur

@@ -6,7 +6,7 @@ ip_address=`aws ec2 describe-instances --instance-id $instance_id | jsonfield Re
 eval $(ssh-agent)
 if [ "$2" = "--me" ]; then
      username=`conjur authn whoami | jsonfield username`
-     ssh-add $MY_SSH_KEY
+     ssh-add $SSH_KEY
      ssh $username@$ip_address
 else
      ssh-add $PUBLIC_SSH_KEY
