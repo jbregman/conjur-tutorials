@@ -75,6 +75,10 @@ AWS has the ability to define specific temporary credentials tied to an IAM role
 ```
 conjur env run ./create_role.sh aws_admin full_access_policy.json aws_admin
 ```
+The aws_admin users have access to the token because they are the owner of the policy and all of the objects.  To have other groups use these credentials to access AWS, they need to be added.  The following command allows the bastion_managers to have full access to AWS.
+```
+conjur group members add example/aws/role/aws_admin/readers group:bastion_manager
+```
 Now that the role has been created, create a temporary session 
 ```
 conjur env run ./create_aws_key_for_role.sh aws_admin
