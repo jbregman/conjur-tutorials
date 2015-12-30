@@ -123,6 +123,7 @@ The following commands assign the groups the permissions on the bastion
 ```
 ## Root Access
 conjur group members add $COLLECTION/bastion/v1/admins group:bastion_manager
+conjur group members add bastion_manager layer:$COLLECTION/bastion/v1
 ## Non-Root Access
 conjur group members add $COLLECTION/bastion/v1/users group:bastion_user
 conjur group members add $COLLECTION/bastion/v1/users group:aws_user
@@ -137,8 +138,11 @@ And add the host to the layer
 ```
 conjur layer hosts add example/bastion/v1 bastion1.example.com
 ```
-Now, connect to the bastion as david.ortiz
+Now, connect to the bastion as david.ortiz (aws_admin)
 ```
 ./set-user.sh david.ortiz
 conjur env run ./ssh_to_bastion.sh ExampleBastion --me
+### Clear the group cache
+sudo nscd -i group
 ```
+
