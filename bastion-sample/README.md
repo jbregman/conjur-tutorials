@@ -3,13 +3,24 @@ This is a sample that configures an AWS VPC with a public and private subnet pro
 ## Set-up the Environment
 1. Install the [Conjur CLI](https://developer.conjur.net/cli)
 2. Install the [Amazon CLI](http://docs.aws.amazon.com/cli/latest/userguide/installing.html)
-3. Set the Conjur Collection.  
+3. Log into Conjur as a member of the security_admin role (e.g. admin)
+4. Set the Conjur Collection.  
 ```
 export COLLECTION=example
 ```
+##Overview
+This sample deloys a bastion on a public subnet protecting access to systems running on a private subnet.  Access to the bastion is controlled by Conjur.  From the bastion, some users are authorized to manage the AWS deployment via the AWS CLI.  This is a more scalable and simpler model than managing AWS via the management console, because it dramatically simplifies the application of AWS IAM roles.
+
+This sample has four groups of users
+- AWS Administrator (aws_admin) - Set-up the AWS infrastructure including the bastion and control access to it via Conjur.  They have root priviledges on the bastion
+- Bastion Managers (bastion_manager) -  Configure the bastion for use by other users.  They have root access to the bastion.
+The bastion in the public subnet is the gateway to the private subnet.  
+- Bastion Users (bastion_user) - Connect to the bastion and manage AWS via the AWS CLI.  They have regular user access to the bastion
+- AWS Users - (aws_user) - Connect via the bastion to AWS infrastructure provisioned by the bastion_users
 
 ## Create the AWS Administration User and Group
-The bastion in the public subnet is the gateway to the private subnet.  Access to the bastion is controlled by Conjur.  In this example, there is a group called *aws:admin*.  This group configures the policies for the bastion and has sudo privileges on the bastion.  The commands below create a user named *david.ortiz*.Users need their own SSH key to access the bastion.  The *create_user.sh* command stores the keys in Conjur.  There is no need to further secure the private key file.
+
+The commands below create a user named *david.ortiz*.Users need their own SSH key to access the bastion.  The *create_user.sh* command stores the keys in Conjur.  Only the user has access to the keys, so its safe to store them in Conjur.  
 ```
 ./create_user.sh david.ortiz 34
 conjur group create --as-group=security_admin --gidnumber=12345 aws_admin
