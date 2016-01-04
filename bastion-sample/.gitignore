@@ -1,3 +1,4 @@
 .conjurenv
 *.pem
 *.json
+credentials*

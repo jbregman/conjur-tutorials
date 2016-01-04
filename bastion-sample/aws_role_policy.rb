@@ -9,11 +9,18 @@ policy "aws/role/#{ENV['AWS_ROLE']}" do
 
      access_key_id = variable "AccessKeyId"
      access_key_id.resource.annotations['description'] = "AWS Access Key for this role"
+     access_key_id.resource.annotations['summon:name'] = "AWS_ACCESS_KEY_ID"
+     access_key_id.resource.annotations['summon:type'] = "!var"
 
      secret_access_key = variable "SecretAccessKey"
      secret_access_key.resource.annotations['description'] = "Secret Access Key for this role"
+     secret_access_key.resource.annotations['summon:name'] = "AWS_SECRET_ACCESS_KEY"
+     secret_access_key.resource.annotations['summon:type'] = "!var"
+     
      session_token = variable "SessionToken"
      session_token.resource.annotations['description'] = "Session Token for this role"
+     session_token.resource.annotations['summon:name'] = "AWS_SESSION_TOKEN"
+     session_token.resource.annotations['summon:type'] = "!var"
 
 
      group "readers" do |group|

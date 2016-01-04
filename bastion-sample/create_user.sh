@@ -14,6 +14,9 @@ conjur pubkeys add $1 @$1.pub
 var_name=`echo $1/personal/key`
 # Creates the variable
 conjur variable create $var_name
+conjur resource annotate variable:$var_name description "Private Key for $1"
+conjur resource annotate variable:$var_name summon:name SSH_KEY
+conjur resource annotate variable:$var_name summon:type !tmp
 # This is very clever - you pipe the private key in and store the value in Conjur
 cat $1 |conjur variable values add $var_name
 # Lock down the user and its key
@@ -23,7 +26,7 @@ conjur resource give user:$1 user:$1
 conjur role revoke_from user:$1 group:$3
 
 # Updates the .conjurenv with a refernce to be used by other scripts
-echo SSH_KEY: !tmp $var_name >> .$1.conjurenv
+#echo SSH_KEY: !tmp $var_name >> .$1.conjurenv
 # Clean up the public and private keys.  They are stored in Conjur
 rm $1
 rm $1.pub
